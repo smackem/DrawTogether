@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EB263332-1AD9-445C-8705-9EB297DD1489}</ProjectGuid>
+    <ProjectGuid>{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DrawTogether.Model</RootNamespace>
-    <AssemblyName>DrawTogether.Model</AssemblyName>
+    <RootNamespace>DrawTogether.Services</RootNamespace>
+    <AssemblyName>DrawTogether.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,15 +29,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\common\DrawTogether.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,17 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\common\AssemblyInfo.Common.cs">
+    <Compile Include="..\source\common\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
-    <Compile Include="User.cs" />
-    <Compile Include="Whiteboard.cs" />
+    <Compile Include="FigureContract.cs" />
+    <Compile Include="FigureKindContract.cs" />
+    <Compile Include="IUserService.cs" />
+    <Compile Include="IWhiteboardService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\common\DrawTogether.snk">
-      <Link>Properties\DrawTogether.snk</Link>
-    </None>
+    <Compile Include="UserContract.cs" />
+    <Compile Include="VertexContract.cs" />
+    <Compile Include="WhiteboardContract.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

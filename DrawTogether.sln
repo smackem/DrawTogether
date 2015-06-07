@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{574A84
 		source\common\AssemblyInfo.Common.cs = source\common\AssemblyInfo.Common.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawTogether.Services", "DrawTogether.Services\DrawTogether.Services.csproj", "{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{EB263332-1AD9-445C-8705-9EB297DD1489}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB263332-1AD9-445C-8705-9EB297DD1489}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB263332-1AD9-445C-8705-9EB297DD1489}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +61,6 @@ Global
 		{878B3C81-3BCF-48E2-AE0D-878B80B1EF42} = {E12C43EE-25CE-43C2-8062-FB4543F2AAB1}
 		{EB263332-1AD9-445C-8705-9EB297DD1489} = {2E82AC0B-5D65-43B5-B42D-4155A63D91C1}
 		{574A841E-D595-4C0D-BBD2-4A40E6FE3AA3} = {2E82AC0B-5D65-43B5-B42D-4155A63D91C1}
+		{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859} = {2E82AC0B-5D65-43B5-B42D-4155A63D91C1}
 	EndGlobalSection
 EndGlobal

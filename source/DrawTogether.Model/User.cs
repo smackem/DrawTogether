@@ -7,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace DrawTogether.Model
 {
-    public class Whiteboard
+    public class User
     {
         readonly int id;
+        readonly string name;
 
-        public Whiteboard(int id, string name)
+        public User(int id, string name)
         {
             this.id = id;
-
-            Name = name;
-            Width = 800;
-            Height = 600;
+            this.name = name;
         }
 
         [Key]
@@ -26,16 +24,9 @@ namespace DrawTogether.Model
             get { return this.id; }
         }
 
-        public string Name { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-
-        public void AttachUser(int userId)
+        public string Name
         {
-        }
-
-        public void DetachUser(int userId)
-        {
+            get { return this.name; }
         }
     }
 }
