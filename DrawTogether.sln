@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{574A84
 		source\common\AssemblyInfo.Common.cs = source\common\AssemblyInfo.Common.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawTogether.Services", "DrawTogether.Services\DrawTogether.Services.csproj", "{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DrawTogether.Services", "source\DrawTogether.Services\DrawTogether.Services.csproj", "{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
