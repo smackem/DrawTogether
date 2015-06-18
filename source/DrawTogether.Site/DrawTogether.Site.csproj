@@ -39,6 +39,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FeatherSharp.ComponentModel, Version=0.2.1.0, Culture=neutral, PublicKeyToken=1ae4883b5e759592, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FeatherSharp.0.2.1.0\lib\net45\FeatherSharp.ComponentModel.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />

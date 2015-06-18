@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace DrawTogether.Services
 {
-    public class VertexContract
+    public struct VertexContract
     {
         public VertexContract(int x, int y)
+        : this()
         {
             X = x;
             Y = y;

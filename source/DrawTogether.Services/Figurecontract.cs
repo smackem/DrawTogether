@@ -8,17 +8,26 @@ namespace DrawTogether.Services
 {
     public class FigureContract
     {
-        public FigureContract(VertexContract[] vertices, FigureKindContract kind, int argb, int userId)
+        public static FigureContract FromPolygon(int userId, Argb argb, VertexContract[] vertices)
         {
-            Vertices = vertices;
-            Kind = kind;
+            return new FigureContract(userId, argb, FigureKindContract.Polygon)
+            {
+                Vertices = vertices,
+            };
+        }
+
+        public int UserId { get; private set; }
+        public Argb Argb { get; private set; }
+        public FigureKindContract Kind { get; private set; }
+        public VertexContract[] Vertices { get; private set; }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        FigureContract(int userId, Argb argb, FigureKindContract kind)
+        {
+            Kind = FigureKindContract.Polygon;
             Argb = argb;
             UserId = userId;
         }
-
-        public VertexContract[] Vertices { get; private set; }
-        public FigureKindContract Kind { get; private set; }
-        public int Argb { get; private set; }
-        public int UserId { get; private set; }
     }
 }

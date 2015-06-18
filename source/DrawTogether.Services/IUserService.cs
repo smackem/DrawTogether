@@ -11,4 +11,8 @@ namespace DrawTogether.Services
         UserContract RegisterUser(string userName);
         void LogoffUser(UserContract user);
     }
+
+    public interface IUserServiceCallback
+    {
+    }
 }

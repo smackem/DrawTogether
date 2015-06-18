@@ -1,13 +1,13 @@
-﻿using System;
+﻿using DrawTogether.Services;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawTogether.Model
+namespace DrawTogether.Backend
 {
-    public class User
+    class User
     {
         readonly int id;
         readonly string name;
@@ -18,7 +18,6 @@ namespace DrawTogether.Model
             this.name = name;
         }
 
-        [Key]
         public int Id
         {
             get { return this.id; }
@@ -27,6 +26,11 @@ namespace DrawTogether.Model
         public string Name
         {
             get { return this.name; }
+        }
+
+        public UserContract GetContract()
+        {
+            return new UserContract(id, name);
         }
     }
 }

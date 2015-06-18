@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FeatherSharp.ComponentModel, Version=0.2.1.0, Culture=neutral, PublicKeyToken=1ae4883b5e759592, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\FeatherSharp.0.2.1.0\lib\net45\FeatherSharp.ComponentModel.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -39,9 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\source\common\AssemblyInfo.Common.cs">
+    <Compile Include="..\common\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="Argb.cs" />
     <Compile Include="FigureContract.cs" />
     <Compile Include="FigureKindContract.cs" />
     <Compile Include="IUserService.cs" />
@@ -51,7 +56,13 @@
     <Compile Include="VertexContract.cs" />
     <Compile Include="WhiteboardContract.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)common\FeatherSharp.cmd $(SolutionDir) -log $(TargetPath)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

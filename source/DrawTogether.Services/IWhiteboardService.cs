@@ -8,17 +8,21 @@ namespace DrawTogether.Services
 {
     public interface IWhiteboardService
     {
-        WhiteboardContract Get(int id);
         WhiteboardContract Create(string name);
+        WhiteboardContract Get(int id);
         bool Delete(int id);
         void AttachUser(int id, int userId);
         void AddFigure(int id, FigureContract figure);
+        void RemoveFigure(int id, int figureIndex);
     }
 
     public interface IWhiteboardServiceCallback
     {
         void NotifyWhiteboardCreated(WhiteboardContract whiteboard);
-        void NotifyWhiteboardUserAttached(WhiteboardContract whiteboard, UserContract user);
+        void NotifyUserAttached(int id, UserContract user);
+        void NotifyUserDetached(int id, int userId);
+        void NotifyFigureAdded(int id, FigureContract figure);
+        void NotifyFigureRemoved(int id, int figureIndex);
         void NotifyWhiteboardDeleted(int id);
     }
 }
