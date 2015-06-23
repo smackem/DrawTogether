@@ -28,6 +28,16 @@ namespace DrawTogether.Backend
             get { return s_instance.Value; }
         }
 
+        public void RegisterCallback(IWhiteboardServiceCallback callback)
+        {
+            Callbacks.RegisterCallback(callback);
+        }
+
+        public void RegisterCallback(IUserServiceCallback callback)
+        {
+            Callbacks.RegisterCallback(callback);
+        }
+
         public WhiteboardContract Create(string name)
         {
             var whiteboard = new Whiteboard(Interlocked.Increment(ref this.whiteboardId), name);
@@ -51,12 +61,21 @@ namespace DrawTogether.Backend
 
         public bool Delete(int id)
         {
+            bool isDeleted;
+
             lock (this.sync)
-                return this.whiteboards.RemoveAll(w => w.Id == id) > 0;
+                isDeleted = this.whiteboards.RemoveAll(w => w.Id == id) > 0;
+
+            if (isDeleted)
+                Callbacks.NotifyWhiteboardDeleted(id);
+
+            return isDeleted;
         }
 
         public void AttachUser(int id, int userId)
         {
+            User user;
+
             lock (this.sync)
             {
                 var whiteboard = GetWhiteboard(id);
@@ -64,43 +83,45 @@ namespace DrawTogether.Backend
                 if (whiteboard == null)
                     return;
 
-                var user = GetRegisteredUser(userId);
+                user = GetRegisteredUser(userId);
 
                 if (user == null)
                     return;
 
                 whiteboard.AttachUser(user);
             }
+
+            Callbacks.NotifyUserAttached(id, Contracts.FromUser(user));
         }
 
         public void AddFigure(int id, FigureContract figureContract)
         {
+            Figure figure;
+
             lock (this.sync)
             {
                 var whiteboard = GetWhiteboard(id);
 
-                if (whiteboard != null)
+                if (whiteboard == null)
+                    return;
+
+                switch (figureContract.Kind)
                 {
-                    Figure figure;
+                    case FigureKindContract.Polygon:
+                        figure = new PolygonFigure(
+                            GetRegisteredUser(userId),
+                            figureContract.Argb,
+                            figureContract.Vertices.Select(v => new Vertex(v.X, v.Y)));
+                        break;
 
-                    switch (figureContract.Kind)
-                    {
-                        case FigureKindContract.Polygon:
-                            figure = new PolygonFigure(
-                                GetRegisteredUser(userId),
-                                figureContract.Argb,
-                                figureContract.Vertices.Select(v => new Vertex(v.X, v.Y)));
-                            break;
-
-                        default:
-                            figure = null;
-                            break;
-                    }
-
-                    if (figure != null)
-                        whiteboard.AddFigure(figure);
+                    default:
+                        return;
                 }
+
+                whiteboard.AddFigure(figure);
             }
+
+            Callbacks.NotifyFigureAdded(id, Contracts.FromFigure(figure));
         }
 
         public void RemoveFigure(int id, int figureIndex)
@@ -109,19 +130,35 @@ namespace DrawTogether.Backend
             {
                 var whiteboard = GetWhiteboard(id);
 
-                if (whiteboard != null)
-                    whiteboard.RemoveFigure(figureIndex);
+                if (whiteboard == null)
+                    return;
+
+                whiteboard.RemoveFigure(figureIndex);
             }
+
+            Callbacks.NotifyFigureRemoved(id, figureIndex);
         }
 
         public UserContract RegisterUser(string userName)
         {
-            throw new NotImplementedException();
+            User user;
+
+            lock (this.sync)
+            {
+                if (this.registeredUsers.Any(u => u.Name == userName))
+                    return null;
+
+                user = new User(Interlocked.Increment(ref userId), userName);
+                this.registeredUsers.Add(user);
+            }
+
+            return Contracts.FromUser(user);
         }
 
-        public void LogoffUser(UserContract user)
+        public bool LogoffUser(int userId)
         {
-            throw new NotImplementedException();
+            lock (this.sync)
+                return this.registeredUsers.RemoveAll(u => u.Id == userId) > 0;
         }
 
         ///////////////////////////////////////////////////////////////////////

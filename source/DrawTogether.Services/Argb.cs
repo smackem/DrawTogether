@@ -43,7 +43,6 @@ namespace DrawTogether.Services
             get { return (0.299 * R + 0.587 * G + 0.114 * B) / 255.0; }
         }
 
-
         ///////////////////////////////////////////////////////////////////////
 
         Argb(byte a, byte r, byte g, byte b)

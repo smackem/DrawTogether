@@ -39,9 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FeatherSharp.ComponentModel, Version=0.2.1.0, Culture=neutral, PublicKeyToken=1ae4883b5e759592, processorArchitecture=MSIL">
+    <Reference Include="FeatherSharp.ComponentModel, Version=0.3.0.0, Culture=neutral, PublicKeyToken=1ae4883b5e759592, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\FeatherSharp.0.2.1.0\lib\net45\FeatherSharp.ComponentModel.dll</HintPath>
+      <HintPath>..\..\packages\FeatherSharp.0.3.0.0\lib\net45\FeatherSharp.ComponentModel.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -176,6 +176,16 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DrawTogether.Backend\DrawTogether.Backend.csproj">
+      <Project>{00C49F6B-684C-45C5-8722-68C3A16998EF}</Project>
+      <Name>DrawTogether.Backend</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DrawTogether.Services\DrawTogether.Services.csproj">
+      <Project>{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}</Project>
+      <Name>DrawTogether.Services</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -210,6 +220,9 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>$(SolutionDir)common\FeatherSharp.cmd $(SolutionDir) -log $(TargetPath)</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

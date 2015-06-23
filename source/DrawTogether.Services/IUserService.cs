@@ -9,7 +9,7 @@ namespace DrawTogether.Services
     public interface IUserService
     {
         UserContract RegisterUser(string userName);
-        void LogoffUser(UserContract user);
+        bool LogoffUser(int userId);
     }
 
     public interface IUserServiceCallback
