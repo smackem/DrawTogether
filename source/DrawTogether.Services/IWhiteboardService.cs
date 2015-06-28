@@ -10,6 +10,7 @@ namespace DrawTogether.Services
     {
         WhiteboardContract Create(string name);
         WhiteboardContract Get(int id);
+        WhiteboardContract GetByName(string name);
         bool Delete(int id);
         void AttachUser(int id, int userId);
         void AddFigure(int id, FigureContract figure);

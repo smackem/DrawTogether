@@ -14,8 +14,7 @@ namespace DrawTogether.Backend
             new Lazy<BackendService>(() =>
                 new BackendService(), isThreadSafe: true);
 
-        public readonly ServiceCallbacks Callbacks =
-            new ServiceCallbacks();
+        readonly ServiceCallbacks Callbacks = new ServiceCallbacks();
 
         readonly object sync = new object();
         readonly List<Whiteboard> whiteboards = new List<Whiteboard>();
@@ -38,15 +37,34 @@ namespace DrawTogether.Backend
             Callbacks.RegisterCallback(callback);
         }
 
-        public WhiteboardContract Create(string name)
+        public void Clear()
         {
-            var whiteboard = new Whiteboard(Interlocked.Increment(ref this.whiteboardId), name);
-            var contract = Contracts.FromWhiteboard(whiteboard);
-            Callbacks.NotifyWhiteboardCreated(contract);
+            Callbacks.Clear();
 
             lock (this.sync)
+            {
+                this.whiteboards.Clear();
+                this.registeredUsers.Clear();
+            }
+        }
+
+        public WhiteboardContract Create(string name)
+        {
+            var id = Interlocked.Increment(ref this.whiteboardId);
+            WhiteboardContract contract;
+
+            lock (this.sync)
+            {
+                if (GetByName(name) != null)
+                    throw new ArgumentException("name must be unique!");
+
+                var whiteboard = new Whiteboard(id, name);
                 this.whiteboards.Add(whiteboard);
 
+                contract = Contracts.FromWhiteboard(whiteboard);
+            }
+
+            Callbacks.NotifyWhiteboardCreated(contract);
             return contract;
         }
 
@@ -54,8 +72,23 @@ namespace DrawTogether.Backend
         {
             lock (this.sync)
             {
-                return Contracts.FromWhiteboard(
-                    this.whiteboards.FirstOrDefault(w => w.Id == id));
+                var whiteboard = this.whiteboards.FirstOrDefault(w => w.Id == id);
+
+                return whiteboard != null
+                       ? Contracts.FromWhiteboard(whiteboard)
+                       : null;
+            }
+        }
+
+        public WhiteboardContract GetByName(string name)
+        {
+            lock (this.sync)
+            {
+                var whiteboard = this.whiteboards.FirstOrDefault(w => w.Name == name);
+
+                return whiteboard != null
+                       ? Contracts.FromWhiteboard(whiteboard)
+                       : null;
             }
         }
 
@@ -146,7 +179,7 @@ namespace DrawTogether.Backend
             lock (this.sync)
             {
                 if (this.registeredUsers.Any(u => u.Name == userName))
-                    return null;
+                    throw new ArgumentException("userName must be unique!");
 
                 user = new User(Interlocked.Increment(ref userId), userName);
                 this.registeredUsers.Add(user);

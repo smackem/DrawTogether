@@ -63,6 +63,15 @@ namespace DrawTogether.Backend
                 callback.NotifyWhiteboardDeleted(id);
         }
 
+        public void Clear()
+        {
+            lock (this.sync)
+            {
+                this.whiteboardCallbacks.Clear();
+                this.userCallbacks.Clear();
+            }
+        }
+
         ///////////////////////////////////////////////////////////////////////
 
         IWhiteboardServiceCallback[] GetWhiteboardCallbacks()
