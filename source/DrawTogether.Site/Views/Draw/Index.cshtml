@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Draw";
+}
+
+<h2>@ViewBag.Title</h2>
+<div class="container">
+    <span id="element"></span>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js", "~/signalr/hubs")
+    <script>
+        $(function () {
+            var whiteboard = $.connection.whiteboardHub;
+
+            whiteboard.client.hello = function (message) {
+                $('#element').append('<strong>' + htmlEncode(message) + '</strong>');
+            };
+
+            $.connection.hub.start().done(function () {
+                whiteboard.server.hello();
+            });
+        });
+
+        function htmlEncode(value) {
+            return $('<div />').text(value).html();
+        }
+    </script>
+}
