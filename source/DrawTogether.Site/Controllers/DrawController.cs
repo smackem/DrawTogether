@@ -18,7 +18,7 @@ namespace DrawTogether.Site.Controllers
                 var userName = (string)Session["userName"];
                 var session = Backend.Sessions[userName];
                 model.UserName = userName;
-                model.WhiteboardId = session
+                model.WhiteboardId = session.Whiteboard.Id;
             }
             catch
             {
