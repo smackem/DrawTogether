@@ -135,6 +135,7 @@
     <Compile Include="..\common\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="ApplicationLayer\Login\LoginService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\OwinStartup.cs" />
@@ -145,10 +146,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Backend.cs" />
     <Compile Include="Hubs\WhiteboardHub.cs" />
-    <Compile Include="Models\DrawModel.cs" />
-    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="ApplicationLayer\Draw\IndexModel.cs" />
+    <Compile Include="ApplicationLayer\Login\IndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -214,16 +214,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DrawTogether.Backend\DrawTogether.Backend.csproj">
-      <Project>{00C49F6B-684C-45C5-8722-68C3A16998EF}</Project>
-      <Name>DrawTogether.Backend</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DrawTogether.Services\DrawTogether.Services.csproj">
-      <Project>{9DC91F6F-5A5C-40C7-9D4D-B580C00B8859}</Project>
-      <Name>DrawTogether.Services</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

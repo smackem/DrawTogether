@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrawTogether.Site.ApplicationLayer.Login;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,20 @@ namespace DrawTogether.Site.Controllers
 {
     public class LoginController : Controller
     {
+        public LoginController()
+        {
+            this.service = new LoginService();
+        }
+
         // GET: Login
         public ActionResult Index()
         {
-            return View(new Models.LoginModel());
+            var model = new IndexModel
+            {
+                UserName = Session["userName"] as string,
+            };
+
+            return View();
         }
 
         // POST: Login/Index
@@ -20,29 +31,26 @@ namespace DrawTogether.Site.Controllers
         {
             try
             {
-                var userName = collection["UserName"];
-                var whiteboardName = collection["WhiteboardName"];
+                var inputModel = new IndexModel
+                {
+                    UserName = collection["UserName"],
+                    WhiteboardName = collection["WhiteboardName"],
+                };
 
-                var session = new BackendSession();
-                var users = Backend.ServiceFactory.CreateUserService(session);
-                var whiteboards = Backend.ServiceFactory.CreateWhiteboardService(session);
+                Session.Add("userName", inputModel.UserName);
 
-                var user = users.RegisterUser(userName);
-                var whiteboard = whiteboards.Create(whiteboardName);
+                var whiteboardId = this.service.CreateWhiteboard(inputModel);
 
-                session.Whiteboard = whiteboard;
-                session.User = user;
-
-                Backend.Sessions[userName] = session;
-
-                Session.Add("userName", userName);
-
-                return RedirectToAction("Index", "Draw", new { id = whiteboard.Id });
+                return RedirectToAction("Index", "Draw", new { id = whiteboardId });
             }
             catch
             {
                 return View();
             }
         }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        readonly LoginService service;
     }
 }
