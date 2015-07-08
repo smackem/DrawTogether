@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DrawTogether.Site.Models
+namespace DrawTogether.Site.ApplicationLayer.Draw
 {
-    public class DrawModel
+    public class IndexModel
     {
         public string UserName { get; set; }
         public string WhiteboardName { get; set; }

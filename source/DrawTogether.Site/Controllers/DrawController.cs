@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrawTogether.Site.ApplicationLayer.Draw;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,7 @@ namespace DrawTogether.Site.Controllers
         // GET: Draw
         public ActionResult Index(int id)
         {
-            var model = new Models.DrawModel();
+            var model = new IndexModel();
 
             try
             {
