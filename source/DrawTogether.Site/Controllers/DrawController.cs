@@ -12,17 +12,23 @@ namespace DrawTogether.Site.Controllers
         // GET: Draw
         public ActionResult Index(int id)
         {
-            var model = new IndexModel();
+            var model = null as IndexModel;
 
             try
             {
+                model = new IndexModel
+                {
+                    UserName = Session["userName"] as string,
+                    WhiteboardWidth = 800,
+                    WhiteboardHeight = 600,
+                };
             }
             catch
             {
                 return RedirectToAction("Index", "Login");
             }
 
-            return View();
+            return View(model);
         }
     }
 }

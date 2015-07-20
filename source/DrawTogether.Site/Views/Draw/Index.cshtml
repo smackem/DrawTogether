@@ -1,26 +1,95 @@
-﻿@{
+﻿@model DrawTogether.Site.ApplicationLayer.Draw.IndexModel
+
+@{
     ViewBag.Title = "Draw";
 }
 
 <h2>@ViewBag.Title</h2>
 <div class="container">
-    <span id="element"></span>
+    <div class="row">
+        <div class="col-md-10">
+            <canvas id="canvas" width="@Model.WhiteboardWidth" height="@Model.WhiteboardHeight"></canvas>
+        </div>
+        <div class="col-md-2">
+            <strong>@Model.UserName</strong>
+            <ul id="usersList"></ul>
+        </div>
+    </div>
 </div>
 
 @section scripts {
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js", "~/signalr/hubs")
     <script>
         $(function () {
-            var whiteboard = $.connection.whiteboardHub;
+            var hub = $.connection.drawHub;
+            hub.qs = { 'id': '@Model.WhiteboardId', 'user': '@Model.UserName' }
 
-            whiteboard.client.hello = function (message) {
-                $('#element').append('<strong>' + htmlEncode(message) + '</strong>');
+            hub.client.notifyUserAttached = function (userName) {
+                $('#usersList').append($('<li />').text(htmlEncode(userName)));
+            };
+
+            hub.client.notifyUserDetached = function (userName) {
             };
 
             $.connection.hub.start().done(function () {
-                whiteboard.server.hello();
+                redraw();
             });
         });
+
+        var context = document.getElementById('canvas').getContext("2d");
+
+        var clickX = new Array();
+        var clickY = new Array();
+        var isMouseDown;
+
+        function addClick(x, y) {
+            clickX.push(x);
+            clickY.push(y);
+        }
+
+        function redraw() {
+            //context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+            context.fillStyle = "#e0e0e0";
+            context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+
+            context.strokeStyle = "#df4b26";
+            context.lineJoin = "round";
+            context.lineWidth = 5;
+
+            for (var i = 0; i < clickX.length; i++) {
+                context.beginPath();
+
+                if (i > 0)
+                    context.moveTo(clickX[i - 1], clickY[i - 1]);
+                else
+                    context.moveTo(clickX[i], clickY[i]);
+
+                context.lineTo(clickX[i], clickY[i]);
+                context.closePath();
+
+                context.stroke();
+            }
+        }
+
+        $('#canvas').mousedown(function (e) {
+            isMouseDown = true;
+            addClick(e.offsetX, e.offsetY);
+            redraw();
+        });
+
+        $('#canvas').mousemove(function (e) {
+            if (isMouseDown) {
+                addClick(e.offsetX, e.offsetY);
+                redraw();
+            }
+        });
+
+        function mouseUpHandler(e) {
+            isMouseDown = false;
+        }
+
+        $('#canvas').mouseup(mouseUpHandler);
+        $('#canvas').mouseleave(mouseUpHandler);
 
         function htmlEncode(value) {
             return $('<div />').text(value).html();

@@ -10,6 +10,8 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
         public string UserName { get; set; }
         public string WhiteboardName { get; set; }
         public int WhiteboardId { get; set; }
-        public IEnumerable<Tuple<String, int>> AttachedUserRefs { get; set; }
+        public IEnumerable<String> AttachedUserNames { get; set; }
+        public int WhiteboardWidth { get; set; }
+        public int WhiteboardHeight { get; set; }
     }
 }

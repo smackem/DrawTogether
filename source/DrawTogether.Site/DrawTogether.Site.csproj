@@ -135,6 +135,7 @@
     <Compile Include="..\common\AssemblyInfo.Common.cs">
       <Link>Properties\AssemblyInfo.Common.cs</Link>
     </Compile>
+    <Compile Include="ApplicationLayer\Draw\DrawService.cs" />
     <Compile Include="ApplicationLayer\Login\LoginService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -146,7 +147,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Hubs\WhiteboardHub.cs" />
+    <Compile Include="Hubs\DrawHub.cs" />
     <Compile Include="ApplicationLayer\Draw\IndexModel.cs" />
     <Compile Include="ApplicationLayer\Login\IndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
