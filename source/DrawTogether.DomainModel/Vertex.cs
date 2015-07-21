@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawTogether.Backend
+namespace DrawTogether.DomainModel
 {
-    struct Vertex
+    public struct Vertex
     {
         readonly int x;
         readonly int y;

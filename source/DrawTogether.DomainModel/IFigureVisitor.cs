@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawTogether.Backend
+namespace DrawTogether.DomainModel
 {
-    interface IFigureVisitor<TState, TResult>
+    public interface IFigureVisitor<TState, TResult>
     {
         TResult visit(PolygonFigure figure, TState state);
     }

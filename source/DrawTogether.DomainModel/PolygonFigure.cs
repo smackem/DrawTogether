@@ -1,20 +1,22 @@
-﻿using DrawTogether.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawTogether.Backend
+namespace DrawTogether.DomainModel
 {
-    class PolygonFigure : Figure
+    public class PolygonFigure : Figure
     {
         readonly object sync = new object();
         readonly List<Vertex> vertices = new List<Vertex>();
 
-        public PolygonFigure(User user, Argb argb, IEnumerable<Vertex> vertices)
-        : base(user, argb)
+        public PolygonFigure(string userName, Argb color, IEnumerable<Vertex> vertices)
+        : base(userName, color)
         {
+            Contract.Requires(vertices != null);
+
             this.vertices = vertices.ToList();
         }
 

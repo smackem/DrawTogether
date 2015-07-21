@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawTogether.Services
+namespace DrawTogether.DomainModel
 {
     [StructLayout(LayoutKind.Explicit)]
     public struct Argb

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Test.DrawTogether.Backend")]
+[assembly: AssemblyTitle("Test.DrawTogether.DomainModel")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Test.DrawTogether.Backend")]
+[assembly: AssemblyProduct("Test.DrawTogether.DomainModel")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("94f217a2-bbb4-445e-aa05-cf7156ca8011")]
+[assembly: Guid("924490f4-33ea-4d49-84c4-1b91f4050f12")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DrawTogether.Backend
+namespace DrawTogether.DomainModel
 {
-    class Whiteboard
+    public class Whiteboard
     {
         readonly int id;
-        readonly List<WeakReference<User>> attachedUsers = new List<WeakReference<User>>();
+        readonly List<string> attachedUsers = new List<string>();
         readonly List<Figure> figures = new List<Figure>();
         readonly object sync = new object();
 
@@ -30,17 +30,12 @@ namespace DrawTogether.Backend
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public IReadOnlyList<User> AttachedUsers
+        public IReadOnlyList<string> AttachedUsers
         {
             get
             {
                 lock (this.sync)
-                {
-                    return this.attachedUsers
-                        .Select(userRef => userRef.GetTarget())
-                        .Where(user => user != null)
-                        .ToArray();
-                }
+                    return this.attachedUsers.ToArray();
             }
         }
 
@@ -53,15 +48,15 @@ namespace DrawTogether.Backend
             }
         }
 
-        public bool AttachUser(User user)
+        public bool AttachUser(string userName)
         {
-            Contract.Requires(user != null);
+            Contract.Requires(userName != null);
 
             lock (this.sync)
             {
-                if (this.attachedUsers.Any(userRef => userRef.GetTarget() == user) == false)
+                if (this.attachedUsers.Contains(userName) == false)
                 {
-                    this.attachedUsers.Add(new WeakReference<User>(user));
+                    this.attachedUsers.Add(userName);
                     return true;
                 }
             }
@@ -69,15 +64,12 @@ namespace DrawTogether.Backend
             return false;
         }
 
-        public bool DetachUser(User user)
+        public bool DetachUser(string userName)
         {
-            Contract.Requires(user != null);
+            Contract.Requires(userName != null);
 
             lock (this.sync)
-            {
-                return this.attachedUsers.RemoveAll(userRef =>
-                    userRef.GetTarget() == user) > 0;
-            }
+                return this.attachedUsers.Remove(userName);
         }
 
         public void AddFigure(Figure figure)
