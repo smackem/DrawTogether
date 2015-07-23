@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DrawTogether.DomainModel
 {
     [StructLayout(LayoutKind.Explicit)]
-    public struct Argb
+    public struct Argb : IEquatable<Argb>
     {
         [FieldOffset(0)]
         public readonly byte B;
@@ -33,6 +33,34 @@ namespace DrawTogether.DomainModel
         public static Argb FromArgb(int bgra)
         {
             return new Argb(bgra);
+        }
+
+        public bool Equals(Argb other)
+        {
+            return other.Value == this.Value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+                return false;
+
+            return Equals((Argb)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Value;
+        }
+
+        public static bool operator ==(Argb x, Argb y)
+        {
+            return x.Equals(y);
+        }
+
+        public static bool operator !=(Argb x, Argb y)
+        {
+            return x.Equals(y) == false;
         }
 
         /// <summary>

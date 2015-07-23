@@ -11,6 +11,8 @@ namespace DrawTogether.Site.Hubs
 {
     public class DrawHub : Hub
     {
+        readonly DrawService service;
+
         public DrawHub()
         {
             this.service = new DrawService();
@@ -52,9 +54,22 @@ namespace DrawTogether.Site.Hubs
             await base.OnDisconnected(stopCalled);
         }
 
-        ///////////////////////////////////////////////////////////////////////
+        public async Task AddFigure(FigureModel figure)
+        {
+            var whiteboardIdStr = Context.QueryString["whiteboardId"];
+            var userName = Context.QueryString["userName"];
 
-        readonly DrawService service;
+            int whiteboardId;
+
+            if (Int32.TryParse(whiteboardIdStr, out whiteboardId))
+            {
+                this.service.AddFigure(whiteboardId, figure);
+
+                await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////
 
         static dynamic ClientsExcept(int whiteboardId, string excludedConnectionId)
         {

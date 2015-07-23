@@ -12,7 +12,11 @@
         </div>
         <div class="col-md-2">
             <strong>@Model.UserName</strong>
-            <ul id="usersList"></ul>
+            <ul id="usersList">
+                @foreach (var userName in Model.AttachedUserNames) {
+                    <li>@userName</li>
+                }
+            </ul>
         </div>
     </div>
 </div>

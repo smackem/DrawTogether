@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DrawTogether.DomainModel
 {
-    public struct Vertex
+    public struct Vertex : IEquatable<Vertex>
     {
         readonly int x;
         readonly int y;
@@ -27,29 +27,32 @@ namespace DrawTogether.DomainModel
             get { return this.y; }
         }
 
+        public bool Equals(Vertex other)
+        {
+            return other.x == this.x && other.y == this.y;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
                 return false;
 
-            var peer = (Vertex)obj;
-
-            return peer.x == this.x && peer.y == this.y;
+            return Equals((Vertex)obj);
         }
 
         public override int GetHashCode()
         {
-            return x.GetHashCode() | (Y.GetHashCode() << 16);
+            return x | (y << 16);
         }
 
         public static bool operator ==(Vertex a, Vertex b)
         {
-            return Object.Equals(a, b);
+            return a.Equals(b);
         }
 
         public static bool operator !=(Vertex a, Vertex b)
         {
-            return Object.Equals(a, b) == false;
+            return a.Equals(b) == false;
         }
     }
 }

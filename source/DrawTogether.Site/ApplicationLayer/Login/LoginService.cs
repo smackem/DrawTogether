@@ -9,13 +9,14 @@ namespace DrawTogether.Site.ApplicationLayer.Login
     {
         public int CreateWhiteboard(IndexModel inputModel)
         {
-            // call into domain model
-            return 0;
+            var whiteboard = Backend.Instance.CreateWhiteboard(inputModel.WhiteboardName, 800, 600);
+
+            return whiteboard.Id;
         }
 
         public bool WhiteboardExists(string name)
         {
-            return false;
+            return Backend.Instance.Whiteboards.Any(wb => wb.Name == name);
         }
     }
 }
