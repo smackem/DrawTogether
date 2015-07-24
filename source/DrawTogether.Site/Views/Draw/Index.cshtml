@@ -8,7 +8,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10">
-            <canvas id="canvas" width="@Model.WhiteboardWidth" height="@Model.WhiteboardHeight"></canvas>
+            <canvas id="canvas" width="@Model.WhiteboardWidth" height="@Model.WhiteboardHeight"
+                    style="border: 2px solid black"></canvas>
         </div>
         <div class="col-md-2">
             <strong>@Model.UserName</strong>
@@ -24,16 +25,48 @@
 @section scripts {
     @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js", "~/signalr/hubs")
     <script>
+        function Vertex(x, y) {
+            var self = this;
+            self.x = x;
+            self.y = y;
+        }
+
+        function Figure(kind, userName, color, vertices) {
+            var self = this;
+            self.kind = kind;
+            self.userName = userName;
+            self.color = color;
+            self.vertices = vertices;
+        }
+
+        var figures = new Array();
+        var currentVertices = null;
+        var hub;
+
+        function beginFigure(x, y) {
+            currentVertices = new Array();
+            currentVertices.push(new Vertex(x, y));
+        }
+
+        function endFigure() {
+            var figure = new Figure("Polygon", "@Model.UserName", "#FF0000", currentVertices);
+            figures.push(figure);
+            hub.server.addFigure(figure);
+        }
+
         $(function () {
-            var hub = $.connection.drawHub;
+            hub = $.connection.drawHub;
             hub.qs = { 'id': '@Model.WhiteboardId', 'user': '@Model.UserName' }
 
             hub.client.notifyUserAttached = function (userName) {
                 $('#usersList').append($('<li />').text(htmlEncode(userName)));
-            };
+            }
 
             hub.client.notifyUserDetached = function (userName) {
-            };
+            }
+
+            hub.client.notifyFigureAdded = function (figure) {
+            }
 
             $.connection.hub.start().done(function () {
                 redraw();
@@ -41,35 +74,37 @@
         });
 
         var context = document.getElementById('canvas').getContext("2d");
-
-        var clickX = new Array();
-        var clickY = new Array();
         var isMouseDown;
 
-        function addClick(x, y) {
-            clickX.push(x);
-            clickY.push(y);
+        function addVertex(x, y) {
+            if (!currentVertices)
+                beginFigure(x, y);
+
+            currentVertices.push(new Vertex(x, y))
         }
 
         function redraw() {
-            //context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-            context.fillStyle = "#e0e0e0";
-            context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
+            //context.fillStyle = "#e0e0e0";
+            //context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
             context.strokeStyle = "#df4b26";
             context.lineJoin = "round";
             context.lineWidth = 5;
 
-            for (var i = 0; i < clickX.length; i++) {
+            for (var figureIndex in figures) {
+                var figure = figures[figureIndex];
+
                 context.beginPath();
 
-                if (i > 0)
-                    context.moveTo(clickX[i - 1], clickY[i - 1]);
-                else
-                    context.moveTo(clickX[i], clickY[i]);
+                for (var vertexIndex in figure.vertices) {
+                    var vertex = figure.vertices[vertexIndex];
 
-                context.lineTo(clickX[i], clickY[i]);
-                context.closePath();
+                    if (vertexIndex == 0)
+                        context.moveTo(vertex.x, vertex.y);
+                    else
+                        context.lineTo(vertex.x, vertex.y);
+                }
 
                 context.stroke();
             }
@@ -77,19 +112,20 @@
 
         $('#canvas').mousedown(function (e) {
             isMouseDown = true;
-            addClick(e.offsetX, e.offsetY);
+            addVertex(e.offsetX, e.offsetY);
             redraw();
         });
 
         $('#canvas').mousemove(function (e) {
             if (isMouseDown) {
-                addClick(e.offsetX, e.offsetY);
+                addVertex(e.offsetX, e.offsetY);
                 redraw();
             }
         });
 
         function mouseUpHandler(e) {
             isMouseDown = false;
+            endFigure();
         }
 
         $('#canvas').mouseup(mouseUpHandler);

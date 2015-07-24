@@ -11,7 +11,7 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
         public string UserName { get; set; }
         public string WhiteboardName { get; set; }
         public int WhiteboardId { get; set; }
-        public IEnumerable<string> AttachedUserNames { get; set; }
+        public string[] AttachedUserNames { get; set; }
         public int WhiteboardWidth { get; set; }
         public int WhiteboardHeight { get; set; }
         public FigureModel[] WhiteboardFigures { get; set; }

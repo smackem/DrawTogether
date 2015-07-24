@@ -65,7 +65,7 @@ namespace DrawTogether.Site.Hubs
             {
                 this.service.AddFigure(whiteboardId, figure);
 
-                await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
+                await ClientsExcept(whiteboardId, Context.ConnectionId).notifyFigureAdded(figure);
             }
         }
 

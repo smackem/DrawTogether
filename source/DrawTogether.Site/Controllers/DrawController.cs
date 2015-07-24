@@ -16,11 +16,17 @@ namespace DrawTogether.Site.Controllers
 
             try
             {
+                var whiteboard = Backend.Instance.GetWhiteboard(id);
+
                 model = new IndexModel
                 {
+                    WhiteboardId = id,
+                    WhiteboardName = whiteboard.Name,
                     UserName = Session["userName"] as string,
-                    WhiteboardWidth = 800,
-                    WhiteboardHeight = 600,
+                    WhiteboardWidth = whiteboard.Width,
+                    WhiteboardHeight = whiteboard.Height,
+                    WhiteboardFigures = whiteboard.Figures.Select(FigureModel.ViewModelFromFigure).ToArray(),
+                    AttachedUserNames = whiteboard.AttachedUsers.ToArray(),
                 };
             }
             catch
