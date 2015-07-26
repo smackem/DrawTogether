@@ -56,8 +56,8 @@ namespace DrawTogether.Site.Hubs
 
         public async Task AddFigure(FigureModel figure)
         {
-            var whiteboardIdStr = Context.QueryString["whiteboardId"];
-            var userName = Context.QueryString["userName"];
+            var userName = Clients.Caller.userName;
+            var whiteboardIdStr = Clients.Caller.whiteboardId;
 
             int whiteboardId;
 

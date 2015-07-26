@@ -40,23 +40,28 @@
         }
 
         var figures = new Array();
-        var currentVertices = null;
+        var currentFigure = null;
         var hub;
 
         function beginFigure(x, y) {
-            currentVertices = new Array();
-            currentVertices.push(new Vertex(x, y));
+            currentFigure = new Figure("Polygon", "@Model.UserName", "#ff000000", new Array());
+            figures.push(currentFigure);
+            console.log("beginfigure");
         }
 
         function endFigure() {
-            var figure = new Figure("Polygon", "@Model.UserName", "#FF0000", currentVertices);
-            figures.push(figure);
-            hub.server.addFigure(figure);
+            if (currentFigure && currentFigure.vertices.length > 0)
+                hub.server.addFigure(currentFigure);
+
+            currentFigure = null;
+            console.log("endfigure");
         }
 
         $(function () {
             hub = $.connection.drawHub;
             hub.qs = { 'id': '@Model.WhiteboardId', 'user': '@Model.UserName' }
+            hub.state.userName = '@Model.UserName';
+            hub.state.whiteboardId = '@Model.WhiteboardId';
 
             hub.client.notifyUserAttached = function (userName) {
                 $('#usersList').append($('<li />').text(htmlEncode(userName)));
@@ -66,6 +71,8 @@
             }
 
             hub.client.notifyFigureAdded = function (figure) {
+                figures.push(figure);
+                redraw();
             }
 
             $.connection.hub.start().done(function () {
@@ -77,10 +84,10 @@
         var isMouseDown;
 
         function addVertex(x, y) {
-            if (!currentVertices)
+            if (!currentFigure)
                 beginFigure(x, y);
 
-            currentVertices.push(new Vertex(x, y))
+            currentFigure.vertices.push(new Vertex(x, y))
         }
 
         function redraw() {
@@ -96,14 +103,16 @@
                 var figure = figures[figureIndex];
 
                 context.beginPath();
+                console.log("beginpath");
 
                 for (var vertexIndex in figure.vertices) {
                     var vertex = figure.vertices[vertexIndex];
+                    console.log("vertex " + vertexIndex + " x:" + vertex.x + " y:" + vertex.y);
 
                     if (vertexIndex == 0)
                         context.moveTo(vertex.x, vertex.y);
-                    else
-                        context.lineTo(vertex.x, vertex.y);
+
+                    context.lineTo(vertex.x, vertex.y);
                 }
 
                 context.stroke();
