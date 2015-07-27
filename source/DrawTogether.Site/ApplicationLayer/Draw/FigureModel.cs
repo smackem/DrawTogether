@@ -73,4 +73,13 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
             return new Vertex(model.X, model.Y);
         }
     }
+
+    public class TestModel
+    {
+        [JsonConverter(typeof(StringEnumConverter))]
+        public FigureKind Kind { get; set; }
+        public string UserName { get; set; }
+        public string Color { get; set; }
+        public VertexModel[] Vertices { get; set; }
+    }
 }

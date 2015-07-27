@@ -52,6 +52,11 @@ namespace DrawTogether.Site.Hubs
             await base.OnDisconnected(stopCalled);
         }
 
+        public void TestMethod(TestModel model)
+        {
+            Log.Trace("TestMethod");
+        }
+
         public void AddFigure(FigureModel figure)
         {
             var userName = Clients.Caller.userName;

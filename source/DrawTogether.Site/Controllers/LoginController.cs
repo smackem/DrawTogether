@@ -39,7 +39,7 @@ namespace DrawTogether.Site.Controllers
 
                 Session.Add("userName", inputModel.UserName);
 
-                var whiteboardId = this.service.CreateWhiteboard(inputModel);
+                var whiteboardId = this.service.GetOrCreateWhiteboard(inputModel);
 
                 return RedirectToAction("Index", "Draw", new { id = whiteboardId });
             }
