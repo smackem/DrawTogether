@@ -23,125 +23,35 @@
 </div>
 
 @section scripts {
-    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js", "~/signalr/hubs")
+    @Scripts.Render("~/Scripts/jquery.signalR-2.2.0.min.js", "~/signalr/hubs", "~/Scripts/Views/DrawView.js")
     <script>
-        function Vertex(x, y) {
-            var self = this;
-            self.x = x;
-            self.y = y;
-        }
-
-        function Figure(kind, userName, color, vertices) {
-            var self = this;
-            self.kind = kind;
-            self.userName = userName;
-            self.color = color;
-            self.vertices = vertices;
-        }
-
-        var figures = new Array();
-        var currentFigure = null;
-        var hub;
-
-        function beginFigure(x, y) {
-            currentFigure = new Figure("Polygon", "@Model.UserName", "#ff000000", new Array());
-            figures.push(currentFigure);
-            console.log("beginfigure");
-        }
-
-        function endFigure() {
-            if (currentFigure && currentFigure.vertices.length > 0)
-                hub.server.addFigure(currentFigure);
-
-            currentFigure = null;
-            console.log("endfigure");
-        }
-
         $(function () {
-            hub = $.connection.drawHub;
-            hub.qs = { 'id': '@Model.WhiteboardId', 'user': '@Model.UserName' }
+            $.connection.hub.qs = { 'id': '@Model.WhiteboardId', 'user': '@Model.UserName' }
+
+            var hub = $.connection.drawHub;
             hub.state.userName = '@Model.UserName';
             hub.state.whiteboardId = '@Model.WhiteboardId';
 
+            var view = new DrawView(hub, @Model.WhiteboardId, '@Model.UserName');
+
             hub.client.notifyUserAttached = function (userName) {
-                $('#usersList').append($('<li />').text(htmlEncode(userName)));
+                console.log("user attached: " + userName);
+                view.attachUser(userName);
             }
 
             hub.client.notifyUserDetached = function (userName) {
+                console.log("user detached: " + userName);
+                view.detachUser(userName);
             }
 
             hub.client.notifyFigureAdded = function (figure) {
-                figures.push(figure);
-                redraw();
+                console.log("figure added: " + figure);
+                view.addFigure(figure);
             }
 
             $.connection.hub.start().done(function () {
-                redraw();
+                view.redraw();
             });
         });
-
-        var context = document.getElementById('canvas').getContext("2d");
-        var isMouseDown;
-
-        function addVertex(x, y) {
-            if (!currentFigure)
-                beginFigure(x, y);
-
-            currentFigure.vertices.push(new Vertex(x, y))
-        }
-
-        function redraw() {
-            context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-            //context.fillStyle = "#e0e0e0";
-            //context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-
-            context.strokeStyle = "#df4b26";
-            context.lineJoin = "round";
-            context.lineWidth = 5;
-
-            for (var figureIndex in figures) {
-                var figure = figures[figureIndex];
-
-                context.beginPath();
-                console.log("beginpath");
-
-                for (var vertexIndex in figure.vertices) {
-                    var vertex = figure.vertices[vertexIndex];
-                    console.log("vertex " + vertexIndex + " x:" + vertex.x + " y:" + vertex.y);
-
-                    if (vertexIndex == 0)
-                        context.moveTo(vertex.x, vertex.y);
-
-                    context.lineTo(vertex.x, vertex.y);
-                }
-
-                context.stroke();
-            }
-        }
-
-        $('#canvas').mousedown(function (e) {
-            isMouseDown = true;
-            addVertex(e.offsetX, e.offsetY);
-            redraw();
-        });
-
-        $('#canvas').mousemove(function (e) {
-            if (isMouseDown) {
-                addVertex(e.offsetX, e.offsetY);
-                redraw();
-            }
-        });
-
-        function mouseUpHandler(e) {
-            isMouseDown = false;
-            endFigure();
-        }
-
-        $('#canvas').mouseup(mouseUpHandler);
-        $('#canvas').mouseleave(mouseUpHandler);
-
-        function htmlEncode(value) {
-            return $('<div />').text(value).html();
-        }
     </script>
 }

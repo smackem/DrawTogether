@@ -6,9 +6,12 @@ using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using DrawTogether.Site.ApplicationLayer.Draw;
+using System.Globalization;
+using FeatherSharp.ComponentModel;
 
 namespace DrawTogether.Site.Hubs
 {
+    [Feather(FeatherAction.Log)]
     public class DrawHub : Hub
     {
         readonly DrawService service;
@@ -20,53 +23,45 @@ namespace DrawTogether.Site.Hubs
 
         public override async Task OnConnected()
         {
-            var whiteboardIdStr = Context.QueryString["whiteboardId"];
-            var userName = Context.QueryString["userName"];
-            int whiteboardId;
+            var whiteboardId = Int32.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
+            var userName = Context.QueryString["user"];
 
-            if (Int32.TryParse(whiteboardIdStr, out whiteboardId))
-            {
-                this.service.AttachUser(whiteboardId, userName);
+            Log.Trace("Connected - whiteboardId={0}, userName={1}", whiteboardId, userName);
 
-                await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
-                await Groups.Add(Context.ConnectionId, whiteboardIdStr);
-            }
+            this.service.AttachUser(whiteboardId, userName);
+
+            await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
+            await Groups.Add(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
 
             await base.OnConnected();
         }
 
         public override async Task OnDisconnected(bool stopCalled)
         {
-            var whiteboardIdStr = Context.QueryString["whiteboardId"];
-            var userName = Context.QueryString["userName"];
+            var whiteboardId = Int32.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
+            var userName = Context.QueryString["user"];
 
-            await Groups.Remove(Context.ConnectionId, whiteboardIdStr);
+            Log.Trace("Disconnected - whiteboardId={0}, userName={1}", whiteboardId, userName);
 
-            int whiteboardId;
+            await Groups.Remove(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
 
-            if (Int32.TryParse(whiteboardIdStr, out whiteboardId))
-            {
-                this.service.DetachUser(whiteboardId, userName);
+            this.service.DetachUser(whiteboardId, userName);
 
-                await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
-            }
+            await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
 
             await base.OnDisconnected(stopCalled);
         }
 
-        public async Task AddFigure(FigureModel figure)
+        public void AddFigure(FigureModel figure)
         {
             var userName = Clients.Caller.userName;
-            var whiteboardIdStr = Clients.Caller.whiteboardId;
+            var whiteboardId = Int32.Parse(Clients.Caller.whiteboardId, CultureInfo.InvariantCulture);
 
-            int whiteboardId;
+            Log.Trace("AddFigure - whiteboardId={0}, userName={1}", whiteboardId, userName);
 
-            if (Int32.TryParse(whiteboardIdStr, out whiteboardId))
-            {
-                this.service.AddFigure(whiteboardId, figure);
+            this.service.AddFigure(whiteboardId, figure);
 
-                await ClientsExcept(whiteboardId, Context.ConnectionId).notifyFigureAdded(figure);
-            }
+            ClientsExcept(whiteboardId, Context.ConnectionId).notifyFigureAdded(figure);
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -74,7 +69,7 @@ namespace DrawTogether.Site.Hubs
         static dynamic ClientsExcept(int whiteboardId, string excludedConnectionId)
         {
             return GlobalHost.ConnectionManager.GetHubContext<DrawHub>().Clients
-                .Groups(new[] { whiteboardId.ToString() }, excludedConnectionId);
+                .Groups(new[] { whiteboardId.ToString(CultureInfo.InvariantCulture) }, excludedConnectionId);
         }
-    }
+   }
 }
