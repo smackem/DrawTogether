@@ -27,25 +27,23 @@
     <script>
         $(function () {
             $.connection.hub.qs = { 'id': '@Model.WhiteboardId', 'user': '@Model.UserName' }
+            $.connection.hub.logging = true;
+            $.connection.hub.error(function (error) {
+                console.log('SignalR error: ' + error)
+            });
 
             var hub = $.connection.drawHub;
-            hub.state.userName = '@Model.UserName';
-            hub.state.whiteboardId = '@Model.WhiteboardId';
-
             var view = new DrawView(hub, @Model.WhiteboardId, '@Model.UserName');
 
             hub.client.notifyUserAttached = function (userName) {
-                console.log("user attached: " + userName);
                 view.attachUser(userName);
             }
 
             hub.client.notifyUserDetached = function (userName) {
-                console.log("user detached: " + userName);
                 view.detachUser(userName);
             }
 
             hub.client.notifyFigureAdded = function (figure) {
-                console.log("figure added: " + figure);
                 view.addFigure(figure);
             }
 

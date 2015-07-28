@@ -23,10 +23,10 @@ namespace DrawTogether.Site.Hubs
 
         public override async Task OnConnected()
         {
-            var whiteboardId = Int32.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
+            var whiteboardId = int.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
             var userName = Context.QueryString["user"];
 
-            Log.Trace("Connected - whiteboardId={0}, userName={1}", whiteboardId, userName);
+            Log.Trace("whiteboardId={0}, userName={1}", whiteboardId, userName);
 
             this.service.AttachUser(whiteboardId, userName);
 
@@ -38,31 +38,25 @@ namespace DrawTogether.Site.Hubs
 
         public override async Task OnDisconnected(bool stopCalled)
         {
-            var whiteboardId = Int32.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
+            var whiteboardId = int.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
             var userName = Context.QueryString["user"];
 
-            Log.Trace("Disconnected - whiteboardId={0}, userName={1}", whiteboardId, userName);
-
-            await Groups.Remove(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
+            Log.Trace("whiteboardId={0}, userName={1}", whiteboardId, userName);
 
             this.service.DetachUser(whiteboardId, userName);
 
-            await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserAttached(userName);
+            await Groups.Remove(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
+            await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserDetached(userName);
 
             await base.OnDisconnected(stopCalled);
         }
 
-        public void TestMethod(TestModel model)
-        {
-            Log.Trace("TestMethod");
-        }
-
         public void AddFigure(FigureModel figure)
         {
-            var userName = Clients.Caller.userName;
-            var whiteboardId = Int32.Parse(Clients.Caller.whiteboardId, CultureInfo.InvariantCulture);
+            var whiteboardId = int.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
+            var userName = Context.QueryString["user"];
 
-            Log.Trace("AddFigure - whiteboardId={0}, userName={1}", whiteboardId, userName);
+            Log.Trace("whiteboardId={0}, userName={1}", whiteboardId, userName);
 
             this.service.AddFigure(whiteboardId, figure);
 

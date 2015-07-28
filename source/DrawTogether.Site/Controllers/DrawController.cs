@@ -25,7 +25,7 @@ namespace DrawTogether.Site.Controllers
                     UserName = Session["userName"] as string,
                     WhiteboardWidth = whiteboard.Width,
                     WhiteboardHeight = whiteboard.Height,
-                    WhiteboardFigures = whiteboard.Figures.Select(FigureModel.ViewModelFromFigure).ToArray(),
+                    WhiteboardFigures = whiteboard.Figures.Select(FigureModel.FromFigure).ToArray(),
                     AttachedUserNames = whiteboard.AttachedUsers.ToArray(),
                 };
             }

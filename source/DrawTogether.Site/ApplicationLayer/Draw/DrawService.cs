@@ -25,7 +25,7 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
         public void AddFigure(int whiteboardId, FigureModel figureModel)
         {
             var whiteboard = Backend.Instance.GetWhiteboard(whiteboardId);
-            var figure = FigureModel.FigureFromViewModel(figureModel);
+            var figure = figureModel.ToFigure();
 
             whiteboard.AddFigure(figure);
         }

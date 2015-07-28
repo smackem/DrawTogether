@@ -17,26 +17,28 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
         public string Color { get; set; }
         public VertexModel[] Vertices { get; set; }
 
-        public static Figure FigureFromViewModel(FigureModel model)
-        {
-            switch (model.Kind)
-            {
-                case FigureKind.Polygon:
-                    return new PolygonFigure(model.UserName, ArgbUtils.ArgbFromString(model.Color),
-                        model.Vertices.Select(v => VertexModel.VertexFromViewModel(v)));
-
-                default:
-                    throw new ArgumentException("Unsupported FigureKind: " + model.Kind);
-            }
-        }
-
-        public static FigureModel ViewModelFromFigure(Figure figure)
+        public static FigureModel FromFigure(Figure figure)
         {
             var viewModel = figure.Accept(new FigureConverter(), null);
             viewModel.UserName = viewModel.UserName;
             viewModel.Color = ArgbUtils.ArgbToString(figure.Color);
             return viewModel;
         }
+
+        public Figure ToFigure()
+        {
+            switch (Kind)
+            {
+                case FigureKind.Polygon:
+                    return new PolygonFigure(UserName, ArgbUtils.ArgbFromString(Color),
+                        Vertices.Select(v => v.ToVertex()));
+
+                default:
+                    throw new ArgumentException("Unsupported FigureKind: " + Kind);
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////
 
         class FigureConverter : IFigureVisitor<object, FigureModel>
         {
@@ -46,7 +48,7 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
                 {
                     Kind = FigureKind.Polygon,
                     Vertices = figure.Vertices
-                        .Select(v => VertexModel.ViewModelFromVertex(v))
+                        .Select(v => VertexModel.FromVertex(v))
                         .ToArray(),
                 };
             }
@@ -63,23 +65,14 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
         public int X { get; set; }
         public int Y { get; set; }
 
-        public static VertexModel ViewModelFromVertex(Vertex vertex)
+        public static VertexModel FromVertex(Vertex vertex)
         {
             return new VertexModel { X = vertex.X, Y = vertex.Y };
         }
 
-        public static Vertex VertexFromViewModel(VertexModel model)
+        public Vertex ToVertex()
         {
-            return new Vertex(model.X, model.Y);
+            return new Vertex(X, Y);
         }
-    }
-
-    public class TestModel
-    {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public FigureKind Kind { get; set; }
-        public string UserName { get; set; }
-        public string Color { get; set; }
-        public VertexModel[] Vertices { get; set; }
     }
 }

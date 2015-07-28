@@ -80,8 +80,9 @@
     <AssemblyOriginatorKeyFile>..\..\common\DrawTogether.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FeatherSharp.ComponentModel">
-      <HintPath>..\..\packages\FeatherSharp.0.3.0.0\lib\net45\FeatherSharp.ComponentModel.dll</HintPath>
+    <Reference Include="FeatherSharp.ComponentModel, Version=0.3.1.0, Culture=neutral, PublicKeyToken=1ae4883b5e759592, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FeatherSharp.0.3.1.0\lib\net45\FeatherSharp.ComponentModel.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

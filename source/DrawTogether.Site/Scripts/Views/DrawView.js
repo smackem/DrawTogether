@@ -1,5 +1,4 @@
-﻿function DrawView(hub, whiteboardId, userName, $canvas)
-{
+﻿function DrawView(hub, whiteboardId, userName, $canvas) {
     var self = this;
     var figures = new Array();
     var currentFigure = null;
@@ -18,19 +17,17 @@
         //context.fillStyle = "#e0e0e0";
         //context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
-        context.strokeStyle = "#df4b26";
-        context.lineJoin = "round";
-        context.lineWidth = 5;
-
         for (var figureIndex in figures) {
             var figure = figures[figureIndex];
 
+            context.strokeStyle = figure.Color;
+            context.lineJoin = "round";
+            context.lineWidth = 5;
+
             context.beginPath();
-            console.log("beginpath");
 
             for (var vertexIndex in figure.Vertices) {
                 var vertex = figure.Vertices[vertexIndex];
-                console.log("vertex " + vertexIndex + " x:" + vertex.X + " y:" + vertex.Y);
 
                 if (vertexIndex == 0)
                     context.moveTo(vertex.X, vertex.Y);
@@ -57,25 +54,21 @@
     function beginFigure(x, y) {
         currentFigure = new Figure("Polygon", userName, "#ff000000", new Array());
         figures.push(currentFigure);
-        console.log("beginfigure");
     }
 
     function addVertex(x, y) {
         if (!currentFigure)
             beginFigure(x, y);
 
-        currentFigure.Vertices.push(new Vertex(x, y))
+        currentFigure.Vertices.push(new Vertex(x, y));
     }
 
     function endFigure() {
         if (currentFigure && currentFigure.Vertices.length > 0) {
-            hub.server.addFigure(currentFigure)
-                .done(function (r) { console.log("done"); })
-                .fail(function (e) { console.log("fail"); });
+            hub.server.addFigure(currentFigure);
         }
 
         currentFigure = null;
-        console.log("endfigure");
     }
 
     function mouseDownHandler(e) {
