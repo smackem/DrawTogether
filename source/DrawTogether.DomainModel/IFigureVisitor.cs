@@ -8,6 +8,6 @@ namespace DrawTogether.DomainModel
 {
     public interface IFigureVisitor<TState, TResult>
     {
-        TResult visit(PolygonFigure figure, TState state);
+        TResult Visit(PolygonFigure figure, TState state);
     }
 }

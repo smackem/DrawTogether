@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,17 +12,21 @@ namespace DrawTogether.DomainModel
         readonly int x;
         readonly int y;
 
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "x", Justification = "Common Term")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "y", Justification = "Common Term")]
         public Vertex(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
         public int X
         {
             get { return this.x; }
         }
 
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
         public int Y
         {
             get { return this.y; }
@@ -42,17 +47,17 @@ namespace DrawTogether.DomainModel
 
         public override int GetHashCode()
         {
-            return x | (y << 16);
+            return this.x | (this.y << 16);
         }
 
-        public static bool operator ==(Vertex a, Vertex b)
+        public static bool operator ==(Vertex one, Vertex two)
         {
-            return a.Equals(b);
+            return one.Equals(two);
         }
 
-        public static bool operator !=(Vertex a, Vertex b)
+        public static bool operator !=(Vertex one, Vertex two)
         {
-            return a.Equals(b) == false;
+            return one.Equals(two) == false;
         }
     }
 }

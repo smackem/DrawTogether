@@ -30,6 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -138,7 +139,7 @@
     </Compile>
     <Compile Include="ApplicationLayer\Draw\DrawService.cs" />
     <Compile Include="ApplicationLayer\Draw\FigureModel.cs" />
-    <Compile Include="ApplicationLayer\Login\LoginService.cs" />
+    <Compile Include="ApplicationLayer\LogOn\LogOnService.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\OwinStartup.cs" />
@@ -146,13 +147,13 @@
     <Compile Include="Backend.cs" />
     <Compile Include="Controllers\DrawController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LogOnController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Hubs\DrawHub.cs" />
     <Compile Include="ApplicationLayer\Draw\IndexModel.cs" />
-    <Compile Include="ApplicationLayer\Login\IndexModel.cs" />
+    <Compile Include="ApplicationLayer\LogOn\IndexModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -210,7 +211,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\LogOn\Index.cshtml" />
     <Content Include="Views\Draw\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

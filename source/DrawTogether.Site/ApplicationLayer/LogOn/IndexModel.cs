@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DrawTogether.Site.ApplicationLayer.Login
+namespace DrawTogether.Site.ApplicationLayer.LogOn
 {
     public class IndexModel
     {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -7,32 +8,51 @@ using System.Threading.Tasks;
 
 namespace DrawTogether.DomainModel
 {
+    [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Argb",
+        Justification = "PascalCasification of the technical term ARGB")]
     [StructLayout(LayoutKind.Explicit)]
     public struct Argb : IEquatable<Argb>
     {
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Member is read-only")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
         [FieldOffset(0)]
         public readonly byte B;
 
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Member is read-only")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
         [FieldOffset(1)]
         public readonly byte G;
 
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Member is read-only")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
         [FieldOffset(2)]
         public readonly byte R;
 
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Member is read-only")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
         [FieldOffset(3)]
         public readonly byte A;
 
+        [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Member is read-only")]
         [FieldOffset(0)]
         public readonly int Value;
 
+        public static readonly Argb Empty = FromArgb(0);
+
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "a")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "r")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "g")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "b")]
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Argb")]
         public static Argb FromArgb(byte a, byte r, byte g, byte b)
         {
             return new Argb(a, r, g, b);
         }
 
-        public static Argb FromArgb(int bgra)
+        [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "Argb")]
+        public static Argb FromArgb(int value)
         {
-            return new Argb(bgra);
+            return new Argb(value);
         }
 
         public bool Equals(Argb other)
@@ -53,14 +73,14 @@ namespace DrawTogether.DomainModel
             return Value;
         }
 
-        public static bool operator ==(Argb x, Argb y)
+        public static bool operator ==(Argb one, Argb two)
         {
-            return x.Equals(y);
+            return one.Equals(two);
         }
 
-        public static bool operator !=(Argb x, Argb y)
+        public static bool operator !=(Argb one, Argb two)
         {
-            return x.Equals(y) == false;
+            return one.Equals(two) == false;
         }
 
         /// <summary>

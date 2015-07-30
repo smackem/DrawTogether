@@ -13,11 +13,10 @@ namespace DrawTogether.Site.Controllers
         public ActionResult Index(int id)
         {
             var model = null as IndexModel;
+            var whiteboard = BackEnd.Instance.GetWhiteboard(id);
 
-            try
+            if (whiteboard != null)
             {
-                var whiteboard = Backend.Instance.GetWhiteboard(id);
-
                 model = new IndexModel
                 {
                     WhiteboardId = id,
@@ -28,13 +27,13 @@ namespace DrawTogether.Site.Controllers
                     WhiteboardFigures = whiteboard.Figures.Select(FigureModel.FromFigure).ToArray(),
                     AttachedUserNames = whiteboard.AttachedUsers.ToArray(),
                 };
-            }
-            catch
-            {
-                return RedirectToAction("Index", "Login");
-            }
 
-            return View(model);
+                return View(model);
+            }
+            else
+            {
+                return RedirectToAction("Index", "LogOn");
+            }
         }
     }
 }
