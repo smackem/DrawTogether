@@ -40,10 +40,13 @@
     }
 
     self.attachUser = function (userName) {
-        $('#usersList').append($('<li />').text(htmlEncode(userName)));
+        $('#usersList').append($('<li />')
+            .text(htmlEncode(userName))
+            .attr("data-tag", userName));
     }
 
     self.detachUser = function (userName) {
+        $('#usersList').remove("li[data-tag='" + userName + "']");
     }
 
     self.addFigure = function (figure) {

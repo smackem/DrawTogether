@@ -45,7 +45,7 @@ namespace DrawTogether.Site.Hubs
 
             this.service.DetachUser(whiteboardId, userName);
 
-            await Groups.Remove(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
+            //await Groups.Remove(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
             await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserDetached(userName);
 
             await base.OnDisconnected(stopCalled);
