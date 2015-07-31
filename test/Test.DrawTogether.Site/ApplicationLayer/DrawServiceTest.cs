@@ -45,7 +45,7 @@ namespace Test.DrawTogether.Site.ApplicationLayer
             Assert.That(deserialized.Kind, Is.EqualTo(figureModel.Kind));
             Assert.That(deserialized.Color, Is.EqualTo(figureModel.Color));
             Assert.That(deserialized.UserName, Is.EqualTo(figureModel.UserName));
-            Assert.That(deserialized.Vertices.Length, Is.EqualTo(1));
+            Assert.That(deserialized.Vertices.Count, Is.EqualTo(1));
             Assert.That(deserialized.Vertices[0].X, Is.EqualTo(figureModel.Vertices[0].X));
             Assert.That(deserialized.Vertices[0].Y, Is.EqualTo(figureModel.Vertices[0].Y));
         }

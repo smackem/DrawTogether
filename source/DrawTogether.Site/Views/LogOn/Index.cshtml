@@ -1,18 +1,18 @@
-﻿@model DrawTogether.Site.ApplicationLayer.Login.IndexModel
+﻿@model DrawTogether.Site.ApplicationLayer.LogOn.IndexModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Log On";
 }
 
-<h2>Login</h2>
+<h2>@ViewBag.Title</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>LoginModel</h4>
+        <h4>Create Whiteboard</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -33,7 +33,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
+                <input type="submit" value="Submit" class="btn btn-default" />
             </div>
         </div>
     </div>

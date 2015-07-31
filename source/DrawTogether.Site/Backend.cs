@@ -7,15 +7,15 @@ using System.Web;
 
 namespace DrawTogether.Site
 {
-    public class Backend
+    public class BackEnd
     {
         readonly Dictionary<int, Whiteboard> whiteboards = new Dictionary<int, Whiteboard>();
         readonly object sync = new object();
         int generatedWhiteboardId;
 
-        static readonly Backend s_instance = new Backend();
+        static readonly BackEnd s_instance = new BackEnd();
 
-        public static Backend Instance
+        public static BackEnd Instance
         {
             get { return s_instance; }
         }

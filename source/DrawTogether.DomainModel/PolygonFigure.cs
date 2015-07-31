@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
@@ -29,9 +30,11 @@ namespace DrawTogether.DomainModel
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods",
+            Justification = "Validated through base class contract")]
         public override TResult Accept<TState, TResult>(IFigureVisitor<TState, TResult> visitor, TState state)
         {
-            return visitor.visit(this, state);
+            return visitor.Visit(this, state);
         }
     }
 }

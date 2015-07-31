@@ -1,4 +1,4 @@
-﻿using DrawTogether.Site.ApplicationLayer.Login;
+﻿using DrawTogether.Site.ApplicationLayer.LogOn;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,14 +7,16 @@ using System.Web.Mvc;
 
 namespace DrawTogether.Site.Controllers
 {
-    public class LoginController : Controller
+    public class LogOnController : Controller
     {
-        public LoginController()
+        readonly LogOnService service;
+
+        public LogOnController()
         {
-            this.service = new LoginService();
+            this.service = new LogOnService();
         }
 
-        // GET: Login
+        // GET: LogOn
         public ActionResult Index()
         {
             var model = new IndexModel
@@ -25,20 +27,20 @@ namespace DrawTogether.Site.Controllers
             return View();
         }
 
-        // POST: Login/Index
+        // POST: LogOn/Index
         [HttpPost]
         public ActionResult Index(FormCollection collection)
         {
+            var inputModel = new IndexModel
+            {
+                UserName = collection["UserName"],
+                WhiteboardName = collection["WhiteboardName"],
+            };
+
+            Session["userName"] = inputModel.UserName;
+
             try
             {
-                var inputModel = new IndexModel
-                {
-                    UserName = collection["UserName"],
-                    WhiteboardName = collection["WhiteboardName"],
-                };
-
-                Session.Add("userName", inputModel.UserName);
-
                 var whiteboardId = this.service.GetOrCreateWhiteboard(inputModel);
 
                 return RedirectToAction("Index", "Draw", new { id = whiteboardId });
@@ -48,9 +50,5 @@ namespace DrawTogether.Site.Controllers
                 return View();
             }
         }
-
-        ///////////////////////////////////////////////////////////////////////
-
-        readonly LoginService service;
     }
 }

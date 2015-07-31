@@ -15,7 +15,7 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
 
         public string UserName { get; set; }
         public string Color { get; set; }
-        public VertexModel[] Vertices { get; set; }
+        public IReadOnlyList<VertexModel> Vertices { get; set; }
 
         public static FigureModel FromFigure(Figure figure)
         {
@@ -42,7 +42,7 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
 
         class FigureConverter : IFigureVisitor<object, FigureModel>
         {
-            public FigureModel visit(PolygonFigure figure, object state)
+            public FigureModel Visit(PolygonFigure figure, object state)
             {
                 return new FigureModel
                 {

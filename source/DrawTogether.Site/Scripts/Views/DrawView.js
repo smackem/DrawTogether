@@ -1,4 +1,4 @@
-﻿function DrawView(hub, whiteboardId, userName, $canvas) {
+﻿function DrawView(hub, whiteboardId, userName) {
     var self = this;
     var figures = new Array();
     var currentFigure = null;
