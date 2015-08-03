@@ -12,7 +12,8 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Create Whiteboard</h4>
+        <h4>Choose a user name and a whiteboard name. If a whiteboard with the name already
+        exists, you will join it.</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -41,4 +42,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(function () {
+            $('#UserName').focus();
+        })
+    </script>
 }

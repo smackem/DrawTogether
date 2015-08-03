@@ -24,8 +24,7 @@ namespace DrawTogether.Site
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/bootstrap-theme.css",
+                      "~/Content/bootstrap-theme.min.css",
                       "~/Content/site.css"));
         }
     }

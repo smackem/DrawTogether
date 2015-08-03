@@ -9,25 +9,25 @@ namespace DrawTogether.DomainModel
 {
     public struct Vertex : IEquatable<Vertex>
     {
-        readonly int x;
-        readonly int y;
+        readonly double x;
+        readonly double y;
 
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "x", Justification = "Common Term")]
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "y", Justification = "Common Term")]
-        public Vertex(int x, int y)
+        public Vertex(double x, double y)
         {
             this.x = x;
             this.y = y;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
-        public int X
+        public double X
         {
             get { return this.x; }
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", Justification = "Common Term")]
-        public int Y
+        public double Y
         {
             get { return this.y; }
         }
@@ -47,7 +47,7 @@ namespace DrawTogether.DomainModel
 
         public override int GetHashCode()
         {
-            return this.x | (this.y << 16);
+            return this.x.GetHashCode() | (this.y.GetHashCode() << 16);
         }
 
         public static bool operator ==(Vertex one, Vertex two)

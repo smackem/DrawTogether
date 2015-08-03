@@ -1,7 +1,7 @@
 ﻿@model DrawTogether.Site.ApplicationLayer.Draw.IndexModel
 
 @{
-    ViewBag.Title = "Draw";
+    ViewBag.Title = Model.WhiteboardName;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -9,15 +9,13 @@
     <div class="row">
         <div class="col-md-10">
             <canvas id="canvas" width="@Model.WhiteboardWidth" height="@Model.WhiteboardHeight"
-                    style="border: 2px solid black"></canvas>
+                    style="background: white"></canvas>
         </div>
-        <div class="col-md-2">
-            <strong>@Model.UserName</strong>
-            <ul id="usersList">
-                @foreach (var userName in Model.AttachedUserNames) {
-                    <li>@userName</li>
-                }
-            </ul>
+        <div id="usersList" class="col-md-2">
+            <strong>@Model.UserName</strong><br />
+            @foreach (var userName in Model.AttachedUserNames) {
+                @userName<br />
+            }
         </div>
     </div>
 </div>
@@ -40,6 +38,7 @@
             }
 
             hub.client.notifyUserDetached = function (userName) {
+                console.log("notifyUserDetached");
                 view.detachUser(userName);
             }
 
