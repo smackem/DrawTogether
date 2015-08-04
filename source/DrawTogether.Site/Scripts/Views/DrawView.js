@@ -40,21 +40,28 @@
     }
 
     self.attachUser = function (userName) {
-        $usersList.append($('<li />')
+        $usersList.append($('<div />')
             .text(htmlEncode(userName))
             .attr("data-tag", userName));
     }
 
     self.detachUser = function (userName) {
         console.log("detachUser");
-        var items = $("[data-tag='" + userName + "']");
-        console.log("detachUser: " + items);
-        $usersList.remove("[data-tag='" + userName + "']");
+        $("#usersList [data-tag='" + userName + "']").remove();
     }
 
     self.addFigure = function (figure) {
         figures.push(figure);
         self.redraw();
+    }
+
+    self.downloadFigures = function () {
+        hub.server.getFigures().then(function (remoteFigures) {
+            for (var figureIndex in remoteFigures)
+                figures.push(remoteFigures[figureIndex]);
+
+            self.redraw();
+        })
     }
 
     function beginFigure(x, y) {

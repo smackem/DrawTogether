@@ -12,9 +12,9 @@
                     style="background: white"></canvas>
         </div>
         <div id="usersList" class="col-md-2">
-            <strong>@Model.UserName</strong><br />
+            <div><strong>@Model.UserName</strong></div>
             @foreach (var userName in Model.AttachedUserNames) {
-                @userName<br />
+                <div data-tag="@Html.Raw(userName)">@userName</div>
             }
         </div>
     </div>
@@ -47,7 +47,7 @@
             }
 
             $.connection.hub.start().done(function () {
-                view.redraw();
+                view.downloadFigures();
             });
         });
     </script>

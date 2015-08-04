@@ -45,7 +45,6 @@ namespace DrawTogether.Site.Hubs
 
             this.service.DetachUser(whiteboardId, userName);
 
-            //await Groups.Remove(Context.ConnectionId, whiteboardId.ToString(CultureInfo.InvariantCulture));
             await ClientsExcept(whiteboardId, Context.ConnectionId).notifyUserDetached(userName);
 
             await base.OnDisconnected(stopCalled);
@@ -61,6 +60,17 @@ namespace DrawTogether.Site.Hubs
             this.service.AddFigure(whiteboardId, figure);
 
             ClientsExcept(whiteboardId, Context.ConnectionId).notifyFigureAdded(figure);
+        }
+
+        public IEnumerable<FigureModel> GetFigures()
+        {
+            var whiteboardId = int.Parse(Context.QueryString["id"], CultureInfo.InvariantCulture);
+            var userName = Context.QueryString["user"];
+
+            Log.Trace("whiteboardId={0}, userName={1}", whiteboardId, userName);
+
+            var figures = this.service.GetFigures(whiteboardId);
+            return figures;
         }
 
         ///////////////////////////////////////////////////////////////////////

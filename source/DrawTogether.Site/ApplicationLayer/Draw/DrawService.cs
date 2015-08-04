@@ -29,5 +29,13 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
 
             whiteboard.AddFigure(figure);
         }
+
+        public IEnumerable<FigureModel> GetFigures(int whiteboardId)
+        {
+            var whiteboard = BackEnd.Instance.GetWhiteboard(whiteboardId);
+
+            return whiteboard.Figures.Select(figure =>
+                FigureModel.FromFigure(figure));
+        }
     }
 }
