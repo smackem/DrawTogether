@@ -6,16 +6,17 @@
     var $canvas = $('#canvas');
     var context = $canvas[0].getContext("2d");
     var $usersList = $('#usersList');
+    var $swatches = $('#colorsList > .swatch');
 
     $canvas.mousedown(mouseDownHandler);
     $canvas.mousemove(mouseMoveHandler);
     $canvas.mouseup(mouseUpHandler);
     $canvas.mouseleave(mouseUpHandler);
 
+    $swatches.click(swatchClickHandler);
+
     self.redraw = function () {
         context.clearRect(0, 0, context.canvas.width, context.canvas.height); // Clears the canvas
-        //context.fillStyle = "#e0e0e0";
-        //context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
         for (var figureIndex in figures) {
             var figure = figures[figureIndex];
@@ -47,7 +48,7 @@
 
     self.detachUser = function (userName) {
         console.log("detachUser");
-        $("#usersList [data-tag='" + userName + "']").remove();
+        $("#usersList > [data-tag='" + userName + "']").remove();
     }
 
     self.addFigure = function (figure) {
@@ -65,7 +66,7 @@
     }
 
     function beginFigure(x, y) {
-        currentFigure = new Figure("Polygon", userName, "#ff000000", new Array());
+        currentFigure = new Figure("Polygon", userName, "#000000", new Array());
         figures.push(currentFigure);
     }
 
@@ -100,6 +101,9 @@
     function mouseUpHandler(e) {
         isMouseDown = false;
         endFigure();
+    }
+
+    function swatchClickHandler(e) {
     }
 
     function htmlEncode(value) {

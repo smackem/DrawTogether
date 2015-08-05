@@ -2,6 +2,11 @@
 
 @{
     ViewBag.Title = Model.WhiteboardName;
+
+    var colors = new[]
+    {
+        "#ff0000", "#00ff00", "#0000ff", "#ffc000", "#a0a0a0", "#000000"
+    };
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,11 +16,22 @@
             <canvas id="canvas" width="@Model.WhiteboardWidth" height="@Model.WhiteboardHeight"
                     style="background: white"></canvas>
         </div>
-        <div id="usersList" class="col-md-2">
-            <div><strong>@Model.UserName</strong></div>
-            @foreach (var userName in Model.AttachedUserNames) {
-                <div data-tag="@Html.Raw(userName)">@userName</div>
-            }
+        <div class="col-md-2">
+            <div id="usersList">
+                <div><strong>@Model.UserName</strong></div>
+                @foreach (var userName in Model.AttachedUserNames) {
+                    <div data-tag="@Html.Raw(userName)">@userName</div>
+                }
+            </div>
+            <div id="colorsList">
+                @foreach (var color in colors) {
+                    <div data-tag="@Html.Raw(color)"
+                         class="swatch"
+                         style="background-color: @Html.Raw(color);">
+                        &nbsp;
+                    </div>
+                }
+            </div>
         </div>
     </div>
 </div>
