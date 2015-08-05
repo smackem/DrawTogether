@@ -8,6 +8,9 @@
     var $usersList = $('#usersList');
     var $swatches = $('#colorsList > .swatch');
 
+    var selectedColor = "#000000";
+    $("#colorsList > [data-tag='" + selectedColor + "']").css("max-width", "60px");
+
     $canvas.mousedown(mouseDownHandler);
     $canvas.mousemove(mouseMoveHandler);
     $canvas.mouseup(mouseUpHandler);
@@ -66,7 +69,7 @@
     }
 
     function beginFigure(x, y) {
-        currentFigure = new Figure("Polygon", userName, "#000000", new Array());
+        currentFigure = new Figure("Polygon", userName, selectedColor, new Array());
         figures.push(currentFigure);
     }
 
@@ -104,6 +107,9 @@
     }
 
     function swatchClickHandler(e) {
+        selectedColor = $(this).attr('data-tag');
+        $(this).css("max-width", "60px");
+        $("#colorsList > [data-tag!='" + selectedColor + "']").css("max-width", "40px");
     }
 
     function htmlEncode(value) {
