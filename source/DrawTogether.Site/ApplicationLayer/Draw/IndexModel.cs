@@ -1,6 +1,7 @@
 ﻿using DrawTogether.DomainModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -21,12 +22,15 @@ namespace DrawTogether.Site.ApplicationLayer.Draw
     {
         public static string ArgbToString(Argb color)
         {
-            return "#000000";
+            return string.Format("#{0:x2}{1:x2}{2:x2}", color.R, color.G, color.B);
         }
 
         public static Argb ArgbFromString(string str)
         {
-            return Argb.FromArgb(255, 0, 0, 0);
+            return Argb.FromArgb(255,
+                byte.Parse(str.Substring(1, 2), NumberStyles.HexNumber),
+                byte.Parse(str.Substring(3, 2), NumberStyles.HexNumber),
+                byte.Parse(str.Substring(5, 2), NumberStyles.HexNumber));
         }
     }
 }
